@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milk Expiry Date Calculator</title>
+    <script>
+        function calculateMilkExpiry() {
+            var currentDateInput = document.getElementById("currentDate").value;
+            var currentDateObj = new Date(currentDateInput);
+            var shelfLife = document.getElementById("shelfLife").value;
+            var expiryDateObj = new Date(currentDateObj.getTime() + shelfLife * 24 * 60 * 60 * 1000);
+            var expiryDateStr = expiryDateObj.toISOString().split('T')[0];
+
+            // 计算距离过期还有多少天
+            var daysUntilExpiry = Math.ceil((expiryDateObj - currentDateObj) / (1000 * 60 * 60 * 24));
+
+            var expiryMessage = "";
+            if (daysUntilExpiry > 0) {
+                expiryMessage = "距离过期还有 " + daysUntilExpiry + " 天";
+            } else if (daysUntilExpiry === 0) {
+                expiryMessage = "今天是过期日";
+            } else {
+                var daysExpired = Math.abs(daysUntilExpiry);
+                expiryMessage = "已经过期 " + daysExpired + " 天";
+            }
+
+            document.getElementById("expiryDate").innerText = "牛奶的到期日期是：" + expiryDateStr;
+            document.getElementById("daysUntilExpiry").innerText = expiryMessage;
+        }
+    </script>
+</head>
+<body>
+    <h1>Milk Expiry Date Calculator</h1>
+    <label for="currentDate">当前日期：</label>
+    <input type="date" id="currentDate" name="currentDate"><br><br>
+    <label for="shelfLife">牛奶的保质期：</label>
+    <select id="shelfLife" name="shelfLife">
+        <option value="14">14 天</option>
+        <option value="18">18 天</option>
+        <option value="21">21 天</option>
+        <option value="28">28 天</option>
+    </select><br><br>
+    <button onclick="calculateMilkExpiry()">计算到期日期</button><br><br>
+    <div id="expiryDate"></div>
+    <div id="daysUntilExpiry"></div>
+</body>
+</html>
